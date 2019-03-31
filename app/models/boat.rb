@@ -9,9 +9,17 @@ class Boat < ActiveRecord::Base
   scope :last_three_alphabetically, -> { limit(3).order('name desc')}
   scope :without_a_captain, -> { where(captain_id: nil)}
   scope :sailboats, -> { joins(:classifications).where(classifications: { name: "Sailboat"})}
+  scope :catamarans, -> { joins(:classifications).where(classifications: { name: "Catamaran"})}
+  scope :motorboats, -> { joins(:classifications).where(classifications: {name: "Motorboat"})}
+  scope :longest, -> { order("length DESC").first }
   
   def self.with_three_classifications
-    
+    @num_of_classification = Boat.joins(:classifications).group(:boat_id).size
+    @num_of_classification.map do |boat|
+      if boat[1] == 3
+        Boat.find(boat[0])
+      end
+    end.compact
   end
 
 
