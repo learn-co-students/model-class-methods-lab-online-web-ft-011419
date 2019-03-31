@@ -5,8 +5,7 @@ class Classification < ActiveRecord::Base
   scope :my_all, -> {Classification.all}
   
   def self.longest
-    @boat = Boat.longest
-    @boat.classifications
+    Boat.longest.classifications
   end
 
 end
